@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Code Route">
+<meta name="theme-color" content="#0f172a">
+<title>Code de la Route 🚗</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface2: #273449;
+  --rouge: #ef4444;
+  --vert: #10b981;
+  --bleu: #3b82f6;
+  --orange: #f59e0b;
+  --txt: #f1f5f9;
+  --txt2: #94a3b8;
+  --border: #334155;
+  --nav-h: 72px;
+  --header-h: 60px;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--txt);
+  font-size: 16px;
+}
+
+/* ── HEADER ── */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px;
+  z-index: 200;
+}
+.header-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; }
+.header-title span { color: var(--orange); }
+.countdown-pill {
+  background: var(--rouge);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* ── SCROLL AREA ── */
+.scroll-area {
+  position: fixed;
+  top: var(--header-h);
+  bottom: var(--nav-h);
+  left: 0; right: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 16px 8px;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--txt2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0;
+  transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-item .nav-icon { font-size: 1.4rem; line-height: 1; }
+.nav-item.active { color: var(--bleu); }
+.nav-item.active .nav-icon { filter: drop-shadow(0 0 6px rgba(59,130,246,0.5)); }
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+}
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── HOME ── */
+.hero {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0f172a 100%);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  margin-bottom: 14px;
+  border: 1px solid #2d4a8a;
+}
+.hero h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+.hero p { color: #bfdbfe; font-size: 0.88rem; line-height: 1.6; margin-bottom: 16px; }
+.stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.stat-box {
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; }
+.stat-lbl { font-size: 0.72rem; color: #bfdbfe; margin-top: 2px; }
+
+.themes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.theme-pill {
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 14px 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-pill:active { transform: scale(0.97); background: #2d4a8a; border-color: var(--bleu); }
+.theme-pill .icon { font-size: 1.4rem; margin-bottom: 6px; }
+.theme-pill .label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; }
+.theme-pill .sublabel { font-size: 0.72rem; color: var(--txt2); margin-top: 2px; }
+
+/* ── COURS ── */
+.lecon-item {
+  background: var(--surface2);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-left: 4px solid var(--bleu);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--bleu);
+  display: flex; align-items: center; gap: 14px;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.lecon-item:active { transform: scale(0.98); background: #1e3a5f; }
+.lecon-icon { font-size: 2rem; flex-shrink: 0; }
+.lecon-text h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.92rem; margin-bottom: 3px; }
+.lecon-text p { font-size: 0.78rem; color: var(--txt2); line-height: 1.4; }
+.lecon-arrow { margin-left: auto; color: var(--txt2); font-size: 1.1rem; flex-shrink: 0; }
+
+/* LECON CONTENT */
+.lecon-view { display: none; }
+.lecon-view.visible { display: block; }
+.lecon-view h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  padding-top: 4px;
+}
+.rule-box {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #3b82f6;
+}
+.rule-box .rule-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.92rem; margin-bottom: 8px; color: #93c5fd; }
+.rule-box li { margin-bottom: 6px; font-size: 0.88rem; line-height: 1.4; list-style: none; }
+.tip-box { background: #1c1400; border-left: 4px solid var(--orange); border-radius: 0 12px 12px 0; padding: 12px 14px; margin-bottom: 12px; font-size: 0.86rem; line-height: 1.5; }
+.tip-box strong { color: var(--orange); }
+.danger-box { background: #1a0000; border-left: 4px solid var(--rouge); border-radius: 0 12px 12px 0; padding: 12px 14px; margin-bottom: 12px; font-size: 0.86rem; line-height: 1.5; }
+.danger-box strong { color: #f87171; }
+.vert-box { background: #001a13; border-left: 4px solid var(--vert); border-radius: 0 12px 12px 0; padding: 12px 14px; margin-bottom: 12px; font-size: 0.86rem; line-height: 1.5; }
+.vert-box strong { color: var(--vert); }
+.sec-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--bleu); margin: 16px 0 8px; }
+.back-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--txt);
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  width: 100%;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-btn:active { background: #1e3a5f; }
+
+/* TABLE */
+.t { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 12px; }
+.t th { background: var(--bleu); color: white; padding: 9px 10px; text-align: left; font-family: 'Syne', sans-serif; font-size: 0.78rem; }
+.t td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--txt); }
+.t tr:nth-child(even) td { background: var(--surface2); }
+
+/* ── QUIZ ── */
+.quiz-setup-card { }
+.quiz-themes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.qt-btn {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.qt-btn .q-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.qt-btn .q-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; color: var(--txt); }
+.qt-btn.selected { border-color: var(--bleu); background: #1e3a5f; }
+.qt-btn:active { transform: scale(0.96); }
+.start-btn {
+  width: 100%;
+  background: var(--bleu);
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 14px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.start-btn:active { transform: scale(0.98); background: #2563eb; }
+
+/* QUIZ GAME */
+.quiz-game { display: none; }
+.quiz-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.quiz-counter { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; }
+.quiz-score-live { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--vert); font-size: 0.9rem; }
+.progress-bar { height: 5px; background: var(--border); border-radius: 10px; margin-bottom: 16px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--bleu), #60a5fa); border-radius: 10px; transition: width 0.3s ease; }
+.question-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.q-theme { font-family: 'Syne', sans-serif; font-size: 0.72rem; color: var(--txt2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.q-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; line-height: 1.5; margin-bottom: 20px; }
+.answers-list { display: flex; flex-direction: column; gap: 10px; }
+.ans-btn {
+  text-align: left;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface2);
+  color: var(--txt);
+  font-size: 0.92rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ans-btn:active:not(:disabled) { transform: scale(0.98); }
+.ans-btn.correct { background: #064e3b; border-color: var(--vert); color: #6ee7b7; }
+.ans-btn.wrong { background: #450a0a; border-color: var(--rouge); color: #fca5a5; }
+.feedback-box {
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  margin-top: 12px;
+  display: none;
+}
+.feedback-box.ok { display: block; background: #064e3b; border: 1px solid var(--vert); color: #6ee7b7; }
+.feedback-box.ko { display: block; background: #450a0a; border: 1px solid var(--rouge); color: #fca5a5; }
+.next-q-btn {
+  width: 100%;
+  background: var(--surface2);
+  color: var(--txt);
+  border: 2px solid var(--bleu);
+  padding: 16px;
+  border-radius: 14px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 12px;
+  display: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.next-q-btn.visible { display: block; }
+.next-q-btn:active { background: #1e3a5f; }
+
+/* RESULT */
+.result-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 32px 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  display: none;
+}
+.result-card.visible { display: block; }
+.result-emoji { font-size: 3.5rem; margin-bottom: 12px; }
+.result-score { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3.5rem; line-height: 1; margin-bottom: 8px; }
+.result-score.good { color: var(--vert); }
+.result-score.bad { color: var(--rouge); }
+.result-msg { font-size: 1rem; color: var(--txt2); margin-bottom: 20px; line-height: 1.5; }
+.restart-btn {
+  width: 100%;
+  background: var(--bleu);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 14px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── PLANNING ── */
+.week-block { margin-bottom: 20px; }
+.week-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--bleu); margin-bottom: 4px; }
+.week-sub { font-size: 0.75rem; color: var(--txt2); margin-bottom: 10px; }
+.days-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
+.day-cell {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 10px 4px;
+  text-align: center;
+  border-top: 3px solid var(--border);
+}
+.day-cell.today { border-top-color: var(--rouge); background: #1a0a0a; }
+.day-cell.done { border-top-color: var(--vert); opacity: 0.6; }
+.day-cell.future { border-top-color: var(--bleu); }
+.day-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; }
+.day-name { font-size: 0.65rem; color: var(--txt2); }
+.day-task { font-size: 0.62rem; margin-top: 4px; color: var(--txt); line-height: 1.3; }
+.exam-bar {
+  background: linear-gradient(135deg, var(--rouge), #b91c1c);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 20px;
+}
+.exam-bar h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; margin-bottom: 4px; }
+.exam-bar p { font-size: 0.85rem; color: #fecaca; }
+
+/* ── MÉMO ── */
+.memo-section { margin-bottom: 16px; }
+.memo-section .card-title { color: var(--orange); }
+.nlist { list-style: none; counter-reset: n; padding: 0; }
+.nlist li {
+  counter-increment: n;
+  padding: 10px 0 10px 36px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+.nlist li::before {
+  content: counter(n);
+  position: absolute; left: 0; top: 10px;
+  width: 24px; height: 24px;
+  background: var(--bleu);
+  color: white;
+  border-radius: 50%;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ANIMATIONS */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.section.active { animation: fadeIn 0.25s ease; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">🚗 Code de la <span>Route</span></div>
+  <div class="countdown-pill" id="countdown">⏱ J-35</div>
+</div>
+
+<!-- ══════════════ ACCUEIL ══════════════ -->
+<div class="scroll-area" id="scroll-accueil">
+<section id="s-accueil" class="section active">
+
+  <div class="hero">
+    <h2>👋 Ta préparation commence !</h2>
+    <p>Examen le <strong>10 juillet 2026</strong>.<br>Il faut <strong>35 bonnes réponses sur 40</strong> pour réussir.</p>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num">40</div><div class="stat-lbl">Questions</div></div>
+      <div class="stat-box"><div class="stat-num">35</div><div class="stat-lbl">Min. requis</div></div>
+      <div class="stat-box"><div class="stat-num" id="jours">35</div><div class="stat-lbl">Jours restants</div></div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#064e3b,#0f172a);border-radius:var(--radius);padding:18px;margin-bottom:14px;border:1px solid #065f46;">
+    <div style="font-family:Syne,sans-serif;font-weight:700;font-size:0.95rem;margin-bottom:2px;">📊 Ta progression</div>
+    <div id="stats-progression"><div style="font-size:0.82rem;color:#6ee7b7;padding-top:8px;">Commence à réviser pour voir ta progression !</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗺️ Les 6 thèmes de l'examen</div>
+    <div class="themes-grid">
+      <div class="theme-pill" onclick="goQuiz('signalisation')">
+        <div class="icon">🚦</div><div class="label">Signalisation</div><div class="sublabel">Panneaux, feux</div>
+      </div>
+      <div class="theme-pill" onclick="goQuiz('vitesses')">
+        <div class="icon">⚡</div><div class="label">Vitesses</div><div class="sublabel">Limites, freinage</div>
+      </div>
+      <div class="theme-pill" onclick="goQuiz('priorites')">
+        <div class="icon">🔄</div><div class="label">Priorités</div><div class="sublabel">Intersections</div>
+      </div>
+      <div class="theme-pill" onclick="goQuiz('alcool')">
+        <div class="icon">🍺</div><div class="label">Alcool</div><div class="sublabel">Taux, sanctions</div>
+      </div>
+      <div class="theme-pill" onclick="goQuiz('securite')">
+        <div class="icon">🛡️</div><div class="label">Sécurité</div><div class="sublabel">Équipements</div>
+      </div>
+      <div class="theme-pill" onclick="goQuiz('secours')">
+        <div class="icon">🆘</div><div class="label">Secours</div><div class="sublabel">PAS, urgences</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#064e3b,#0f172a);border-color:#065f46;cursor:pointer;" onclick="showNav('quiz')">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-size:2.5rem;">🎯</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:3px;">Examen blanc</div>
+        <div style="font-size:0.82rem;color:#6ee7b7;">40 questions · chrono · correction immédiate</div>
+      </div>
+      <div style="margin-left:auto;font-size:1.3rem;color:#6ee7b7;">→</div>
+    </div>
+  </div>
+
+</section>
+</div>
+
+<!-- ══════════════ COURS ══════════════ -->
+<div class="scroll-area" id="scroll-cours" style="display:none;">
+<section id="s-cours" class="section">
+
+  <div id="cours-liste">
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">📚 Cours simplifiés</div>
+      <div style="font-size:0.84rem;color:var(--txt2);">Appuie sur un thème pour l'étudier.</div>
+    </div>
+
+    <div class="lecon-item" onclick="openLecon('signalisation')">
+      <div class="lecon-icon">🚦</div>
+      <div class="lecon-text"><h4>Signalisation routière</h4><p>Panneaux, feux, marquages au sol</p></div>
+      <div class="lecon-arrow">›</div>
+    </div>
+    <div class="lecon-item" onclick="openLecon('vitesses')">
+      <div class="lecon-icon">⚡</div>
+      <div class="lecon-text"><h4>Vitesses & distances</h4><p>Limites légales, freinage, météo</p></div>
+      <div class="lecon-arrow">›</div>
+    </div>
+    <div class="lecon-item" onclick="openLecon('priorites')">
+      <div class="lecon-icon">🔄</div>
+      <div class="lecon-text"><h4>Priorités & intersections</h4><p>Droite, stop, cédez, ronds-points</p></div>
+      <div class="lecon-arrow">›</div>
+    </div>
+    <div class="lecon-item" onclick="openLecon('alcool')">
+      <div class="lecon-icon">🍺</div>
+      <div class="lecon-text"><h4>Alcool, drogues & médicaments</h4><p>Taux légaux, sanctions, effets</p></div>
+      <div class="lecon-arrow">›</div>
+    </div>
+    <div class="lecon-item" onclick="openLecon('securite')">
+      <div class="lecon-icon">🛡️</div>
+      <div class="lecon-text"><h4>Sécurité passive & équipements</h4><p>Ceinture, siège enfant, éclairage</p></div>
+      <div class="lecon-arrow">›</div>
+    </div>
+    <div class="lecon-item" onclick="openLecon('secours')">
+      <div class="lecon-icon">🆘</div>
+      <div class="lecon-text"><h4>Premiers secours</h4><p>PAS, numéros d'urgence, PLS</p></div>
+      <div class="lecon-arrow">›</div>
+    </div>
+  </div>
+
+  <div id="lecon-view" class="lecon-view">
+    <div id="lecon-body"></div>
+    <button class="back-btn" onclick="closeLecon()">← Retour aux cours</button>
+  </div>
+
+</section>
+</div>
+
+<!-- ══════════════ QUIZ ══════════════ -->
+<div class="scroll-area" id="scroll-quiz" style="display:none;">
+<section id="s-quiz" class="section">
+
+  <!-- Setup -->
+  <div id="quiz-setup">
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">🎯 Choisir un entraînement</div>
+      <div style="font-size:0.84rem;color:var(--txt2);margin-bottom:14px;">Thème ou examen blanc complet</div>
+      <div class="quiz-themes">
+        <div class="qt-btn selected" onclick="selTheme(this,'all')"><div class="q-icon">📋</div><div class="q-label">Examen blanc</div></div>
+        <div class="qt-btn" onclick="selTheme(this,'signalisation')"><div class="q-icon">🚦</div><div class="q-label">Signalisation</div></div>
+        <div class="qt-btn" onclick="selTheme(this,'vitesses')"><div class="q-icon">⚡</div><div class="q-label">Vitesses</div></div>
+        <div class="qt-btn" onclick="selTheme(this,'priorites')"><div class="q-icon">🔄</div><div class="q-label">Priorités</div></div>
+        <div class="qt-btn" onclick="selTheme(this,'alcool')"><div class="q-icon">🍺</div><div class="q-label">Alcool</div></div>
+        <div class="qt-btn" onclick="selTheme(this,'securite')"><div class="q-icon">🛡️</div><div class="q-label">Sécurité</div></div>
+      </div>
+      <button class="start-btn" onclick="startQuiz()">🚀 Commencer</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div class="quiz-game" id="quiz-game">
+    <div class="quiz-top">
+      <span class="quiz-counter" id="quiz-counter">1/10</span>
+      <span class="quiz-score-live" id="quiz-live">✓ 0</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:10%"></div></div>
+    <div class="question-card">
+      <div class="q-theme" id="q-theme">THÈME</div>
+      <div class="q-text" id="q-text">Question</div>
+      <div class="answers-list" id="q-answers"></div>
+      <div class="feedback-box" id="q-feedback"></div>
+      <button class="next-q-btn" id="q-next" onclick="nextQ()">Question suivante →</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="result-card" id="quiz-result">
+    <div class="result-emoji" id="res-emoji">🎉</div>
+    <div class="result-score" id="res-score">0/10</div>
+    <div class="result-msg" id="res-msg">Résultat</div>
+    <button class="restart-btn" onclick="resetQuiz()">🔄 Recommencer</button>
+  </div>
+
+</section>
+</div>
+
+<!-- ══════════════ PLANNING ══════════════ -->
+<div class="scroll-area" id="scroll-planning" style="display:none;">
+<section id="s-planning" class="section">
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">📅 Planning 35 jours</div>
+    <div style="font-size:0.82rem;color:var(--txt2);">5 juin → 10 juillet · 30 min/jour suffit</div>
+  </div>
+  <div id="planning-content"></div>
+</section>
+</div>
+
+<!-- ══════════════ MÉMO ══════════════ -->
+<div class="scroll-area" id="scroll-memo" style="display:none;">
+<section id="s-memo" class="section">
+
+  <div class="card memo-section">
+    <div class="card-title">⚡ Limites de vitesse</div>
+    <table class="t">
+      <tr><th>Lieu</th><th>Sec</th><th>Pluie</th></tr>
+      <tr><td>🏙️ Agglo</td><td>50</td><td>50</td></tr>
+      <tr><td>🛤️ Route</td><td>80</td><td>80</td></tr>
+      <tr><td>🛣️ 2×2 voies</td><td>110</td><td>100</td></tr>
+      <tr><td>🏎️ Autoroute</td><td>130</td><td>110</td></tr>
+      <tr><td>🌫️ Visib. &lt;50m</td><td colspan="2" style="text-align:center;font-weight:700;color:var(--orange);">50 km/h partout</td></tr>
+    </table>
+    <div class="danger-box"><strong>🆕 Permis probatoire :</strong> 110 km/h autoroute · 80 km/h route</div>
+  </div>
+
+  <div class="card memo-section">
+    <div class="card-title">🍺 Alcool</div>
+    <table class="t">
+      <tr><th>Conducteur</th><th>Taux max</th></tr>
+      <tr><td>Normal</td><td>0,5 g/L sang</td></tr>
+      <tr><td>Probatoire / PL</td><td>0,2 g/L sang</td></tr>
+      <tr><td>Délit (&gt;0,8 g/L)</td><td style="color:var(--rouge);">2 ans prison</td></tr>
+    </table>
+    <div class="tip-box"><strong>💡 :</strong> Corps élimine ≈ 0,10-0,15 g/L/heure. Ni café ni sport n'accélèrent !</div>
+  </div>
+
+  <div class="card memo-section">
+    <div class="card-title">📏 Distances de sécurité</div>
+    <table class="t">
+      <tr><th>Vitesse</th><th>Distance min.</th></tr>
+      <tr><td>50 km/h</td><td>28 m (2 sec)</td></tr>
+      <tr><td>80 km/h</td><td>44 m (2 sec)</td></tr>
+      <tr><td>110 km/h</td><td>61 m (2 sec)</td></tr>
+      <tr><td>130 km/h</td><td>72 m (2 sec)</td></tr>
+    </table>
+    <div class="vert-box"><strong>Règle des 2 secondes :</strong> Toujours 2 sec entre toi et le véhicule devant. Double sur pluie, triple sur verglas.</div>
+  </div>
+
+  <div class="card memo-section">
+    <div class="card-title">🔢 Urgences</div>
+    <table class="t">
+      <tr><th>Service</th><th>N°</th></tr>
+      <tr><td>🚑 SAMU</td><td style="font-weight:700;font-size:1.1rem;color:var(--rouge);">15</td></tr>
+      <tr><td>👮 Police</td><td style="font-weight:700;font-size:1.1rem;color:var(--rouge);">17</td></tr>
+      <tr><td>🚒 Pompiers</td><td style="font-weight:700;font-size:1.1rem;color:var(--rouge);">18</td></tr>
+      <tr><td>🆘 Européen</td><td style="font-weight:700;font-size:1.1rem;color:var(--rouge);">112</td></tr>
+    </table>
+  </div>
+
+  <div class="card memo-section">
+    <div class="card-title">⚠️ Points retirés</div>
+    <table class="t">
+      <tr><th>Infraction</th><th>Pts</th></tr>
+      <tr><td>Alcool ≥ 0,5 g/L</td><td style="color:var(--rouge);font-weight:700;">-6</td></tr>
+      <tr><td>Excès &gt; 50 km/h</td><td style="color:var(--rouge);font-weight:700;">-6</td></tr>
+      <tr><td>Feu rouge grillé</td><td style="color:var(--orange);font-weight:700;">-4</td></tr>
+      <tr><td>Priorité non respectée</td><td style="color:var(--orange);font-weight:700;">-4</td></tr>
+      <tr><td>Téléphone au volant</td><td style="color:var(--orange);font-weight:700;">-3</td></tr>
+      <tr><td>Sans ceinture</td><td style="color:var(--orange);font-weight:700;">-3</td></tr>
+    </table>
+    <div class="tip-box"><strong>🆕 Permis probatoire :</strong> démarre avec seulement 6 points.</div>
+  </div>
+
+  <div class="card memo-section">
+    <div class="card-title">🧠 Les 10 règles d'or</div>
+    <ul class="nlist">
+      <li>Le rond-point : véhicules <strong>déjà engagés</strong> sont prioritaires.</li>
+      <li><strong>STOP</strong> = arrêt complet obligatoire, même voie libre.</li>
+      <li>Priorité à droite sauf indication contraire.</li>
+      <li>Ceinture obligatoire pour <strong>TOUS</strong>, avant ET arrière.</li>
+      <li>Enfant &lt;10 ans = siège auto adapté obligatoire.</li>
+      <li>Téléphone tenu en main = interdit, même moteur tournant.</li>
+      <li><strong>PAS</strong> : Protéger → Alerter → Secourir.</li>
+      <li>Ne jamais déplacer un blessé sauf danger immédiat.</li>
+      <li>Médicament pictogramme 🔴 rouge = ne pas conduire.</li>
+      <li>Passage à niveau : jamais de marche arrière, jamais de dépassement.</li>
+    </ul>
+  </div>
+
+</section>
+</div>
+
+<!-- ══════════════ BOTTOM NAV ══════════════ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="showNav('accueil')" id="nav-accueil">
+    <span class="nav-icon">🏠</span><span>Accueil</span>
+  </button>
+  <button class="nav-item" onclick="showNav('cours')" id="nav-cours">
+    <span class="nav-icon">📚</span><span>Cours</span>
+  </button>
+  <button class="nav-item" onclick="showNav('quiz')" id="nav-quiz">
+    <span class="nav-icon">🎯</span><span>Quiz</span>
+  </button>
+  <button class="nav-item" onclick="showNav('planning')" id="nav-planning">
+    <span class="nav-icon">📅</span><span>Planning</span>
+  </button>
+  <button class="nav-item" onclick="showNav('memo')" id="nav-memo">
+    <span class="nav-icon">📋</span><span>Mémo</span>
+  </button>
+</nav>
+
+<script>
+// ── LOCALSTORAGE PROGRESSION ──
+const STORAGE_KEY = 'cdr_progression';
+
+function loadProg() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveProg(data) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+// ── COUNTDOWN ──
+function updateCountdown() {
+  const exam = new Date('2026-07-10');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = Math.ceil((exam - today) / 86400000);
+  document.getElementById('countdown').textContent = `⏱ J-${d}`;
+  if(document.getElementById('jours')) document.getElementById('jours').textContent = d;
+}
+updateCountdown();
+
+// ── NAV ──
+const tabs = ['accueil','cours','quiz','planning','memo'];
+function showNav(tab) {
+  tabs.forEach(t => {
+    document.getElementById('scroll-'+t).style.display = t===tab?'':'none';
+    const s = document.getElementById('s-'+t);
+    if(s){ s.classList.toggle('active', t===tab); }
+    document.getElementById('nav-'+t).classList.toggle('active', t===tab);
+  });
+  document.getElementById('scroll-'+tab).scrollTop = 0;
+  if(tab==='planning') buildPlanning();
+}
+
+// ── COURS ──
+const lecons = {
+  signalisation: {
+    titre:'🚦 Signalisation routière',
+    html:`
+<div class="rule-box">
+  <div class="rule-title">Les 4 familles de panneaux</div>
+  <ul style="padding:0;margin:0;">
+    <li>🔺 <strong>Danger</strong> — Triangle rouge, fond blanc</li>
+    <li>🔴 <strong>Interdiction</strong> — Cercle rouge → ne pas faire</li>
+    <li>🔵 <strong>Obligation</strong> — Cercle bleu → obligation</li>
+    <li>🟦 <strong>Indication</strong> — Rectangle → infos, directions</li>
+  </ul>
+</div>
+<div class="tip-box"><strong>💡 Mémo :</strong> Cercle rouge = interdit. Cercle bleu = obligatoire. Triangle = danger.</div>
+<div class="sec-title">🚦 Feux tricolores</div>
+<div class="vert-box"><strong>Vert :</strong> Tu peux passer, reste vigilant.</div>
+<div class="tip-box"><strong>Orange fixe :</strong> Arrête-toi si tu peux le faire sans danger.</div>
+<div class="danger-box"><strong>Rouge :</strong> Arrêt OBLIGATOIRE avant la ligne.</div>
+<div class="tip-box"><strong>Feu rouge + flèche verte :</strong> Tu peux t'engager dans la direction de la flèche avec précaution.</div>
+<div class="sec-title">🛣️ Marquages au sol</div>
+<div class="rule-box">
+  <div class="rule-title">Les lignes essentielles</div>
+  <ul style="padding:0;margin:0;">
+    <li>Ligne <strong>discontinue</strong> → dépassement autorisé</li>
+    <li>Ligne <strong>continue</strong> → dépassement INTERDIT</li>
+    <li>Ligne continue <strong>+</strong> discontinue → côté discontinu peut dépasser</li>
+  </ul>
+</div>`
+  },
+  vitesses: {
+    titre:'⚡ Vitesses & distances',
+    html:`
+<div class="rule-box">
+  <div class="rule-title">Limites légales</div>
+  <ul style="padding:0;margin:0;">
+    <li>🏙️ <strong>Agglomération :</strong> 50 km/h</li>
+    <li>🛤️ <strong>Route :</strong> 80 km/h</li>
+    <li>🛣️ <strong>2×2 voies :</strong> 110 km/h</li>
+    <li>🏎️ <strong>Autoroute :</strong> 130 km/h (110 pluie)</li>
+    <li>🌫️ <strong>Visibilité &lt;50m :</strong> 50 km/h partout !</li>
+  </ul>
+</div>
+<div class="danger-box"><strong>⚠️ Permis probatoire :</strong> 110 km/h autoroute · 80 km/h route · pendant 3 ans.</div>
+<div class="sec-title">📏 Distances de freinage</div>
+<div class="tip-box"><strong>💡 Règle des 2 secondes :</strong> Toujours 2 sec entre toi et le véhicule devant toi.</div>
+<div class="rule-box">
+  <div class="rule-title">Impact du sol</div>
+  <ul style="padding:0;margin:0;">
+    <li>🌧️ Sol mouillé → distance x<strong>2</strong></li>
+    <li>❄️ Verglas/neige → distance x<strong>3 à 4</strong></li>
+  </ul>
+</div>
+<div class="sec-title">⚠️ Sanctions</div>
+<table class="t">
+  <tr><th>Dépassement</th><th>Amende</th><th>Pts</th></tr>
+  <tr><td>&lt; 20 km/h</td><td>68 €</td><td>-1</td></tr>
+  <tr><td>20-50 km/h</td><td>135 €</td><td>-2 à -4</td></tr>
+  <tr><td>&gt; 50 km/h</td><td>1 500 €</td><td>-6</td></tr>
+</table>`
+  },
+  priorites: {
+    titre:'🔄 Priorités & intersections',
+    html:`
+<div class="rule-box">
+  <div class="rule-title">Règle de base : Priorité à droite</div>
+  Tout véhicule arrivant par ta <strong>droite</strong> est prioritaire, sauf indication contraire.
+</div>
+<div class="danger-box"><strong>⚠️ Exceptions :</strong> Feux, panneaux (STOP, cédez), agent de police, voie prioritaire (flèche jaune).</div>
+<div class="sec-title">🛑 STOP vs Cédez-le-passage</div>
+<div class="rule-box">
+  <div class="rule-title">🛑 STOP (octogone rouge)</div>
+  ARRÊT COMPLET OBLIGATOIRE. Vitesse = 0. Même si la voie est libre.
+</div>
+<div class="rule-box">
+  <div class="rule-title">⬦ Cédez-le-passage (triangle pointe en bas)</div>
+  Tu cèdes la priorité. Tu peux ralentir sans t'arrêter si la voie est libre.
+</div>
+<div class="tip-box"><strong>💡 Mémo :</strong> STOP = pied au plancher obligatoirement. Cédez = tu t'arrêtes seulement si nécessaire.</div>
+<div class="sec-title">🔵 Le rond-point</div>
+<div class="vert-box"><strong>Règle :</strong> Les véhicules <strong>déjà dans le rond-point</strong> ont la priorité. Tu attends pour entrer.</div>
+<div class="sec-title">🚑 Véhicules prioritaires</div>
+<div class="rule-box">
+  <div class="rule-title">Sirène + gyrophare = priorité absolue</div>
+  Pompiers (18), SAMU (15), Police (17) → Serre-toi à droite et laisse passer.
+</div>`
+  },
+  alcool: {
+    titre:'🍺 Alcool, drogues & médicaments',
+    html:`
+<div class="rule-box">
+  <div class="rule-title">Taux légaux d'alcoolémie</div>
+  <ul style="padding:0;margin:0;">
+    <li>🟡 <strong>Conducteur normal :</strong> 0,5 g/L de sang</li>
+    <li>🔴 <strong>Permis probatoire / PL :</strong> 0,2 g/L de sang</li>
+    <li>🚫 <strong>Délit :</strong> à partir de 0,8 g/L</li>
+  </ul>
+</div>
+<div class="danger-box"><strong>Délit ≥ 0,8 g/L :</strong> jusqu'à 2 ans de prison · 4 500 € d'amende · suspension permis.</div>
+<div class="sec-title">⏱️ Élimination de l'alcool</div>
+<div class="tip-box"><strong>💡 :</strong> Corps élimine ≈ 0,10 à 0,15 g/L par heure. Ni café, ni douche, ni sport n'accélèrent. Seul le temps compte.</div>
+<div class="vert-box"><strong>Exemple :</strong> 1 verre ≈ 0,2-0,25 g/L → 2h minimum pour l'éliminer.</div>
+<div class="sec-title">💊 Médicaments</div>
+<div class="rule-box">
+  <div class="rule-title">Les 3 pictogrammes</div>
+  <ul style="padding:0;margin:0;">
+    <li>🟡 Jaune → conduire avec précaution</li>
+    <li>🟠 Orange → dangereux, soyez vigilant</li>
+    <li>🔴 Rouge → <strong>NE PAS CONDUIRE</strong></li>
+  </ul>
+</div>
+<div class="danger-box"><strong>Drogues :</strong> Tolérance zéro. Cannabis détectable plusieurs jours après consommation.</div>
+<div class="sec-title">😴 Fatigue</div>
+<div class="rule-box">
+  <div class="rule-title">Pause toutes les 2 heures sur autoroute</div>
+  1 seconde d'endormissement à 130 km/h = 36 mètres parcourus sans contrôle.
+</div>`
+  },
+  securite: {
+    titre:'🛡️ Sécurité passive & équipements',
+    html:`
+<div class="rule-box">
+  <div class="rule-title">Ceinture de sécurité</div>
+  Obligatoire pour <strong>TOUS</strong> (conducteur + passagers), avant ET arrière, partout.
+</div>
+<div class="danger-box"><strong>Sanction :</strong> 135 € + 3 points par personne non attachée.</div>
+<div class="sec-title">👶 Sièges enfant</div>
+<div class="rule-box">
+  <div class="rule-title">Jusqu'à 10 ans = siège auto obligatoire</div>
+  <ul style="padding:0;margin:0;">
+    <li>👶 &lt;13 kg → coque dos à la route</li>
+    <li>🧒 9-18 kg → rehausseur avec dossier</li>
+    <li>🧑 15-36 kg → rehausseur seul autorisé</li>
+  </ul>
+</div>
+<div class="danger-box"><strong>⚠️ Siège dos à la route à l'avant :</strong> DÉSACTIVER l'airbag passager. Mortel sinon !</div>
+<div class="sec-title">🔦 Éclairage</div>
+<div class="tip-box"><strong>Feux de croisement :</strong> Obligatoires la nuit, tunnel, pluie, brouillard, visibilité réduite.</div>
+<div class="danger-box"><strong>Pleins phares :</strong> Interdits en agglomération et si véhicule en face à moins de 150 m.</div>
+<div class="sec-title">🔺 Triangle + gilet</div>
+<div class="rule-box">
+  <div class="rule-title">En cas de panne ou accident</div>
+  1. Mettre le <strong>gilet jaune AVANT</strong> de sortir du véhicule<br>
+  2. Placer le triangle : 30 m agglo · 100 m route · 150 m autoroute
+</div>`
+  },
+  secours: {
+    titre:'🆘 Premiers secours',
+    html:`
+<div class="rule-box">
+  <div class="rule-title">La règle PAS — dans cet ordre !</div>
+  <ul style="padding:0;margin:0;">
+    <li>🛡️ <strong>P — Protéger :</strong> Sécuriser les lieux (signaler, baliser)</li>
+    <li>📞 <strong>A — Alerter :</strong> Appeler les secours (15, 17, 18 ou 112)</li>
+    <li>🤲 <strong>S — Secourir :</strong> Premiers gestes sans aggraver</li>
+  </ul>
+</div>
+<div class="danger-box"><strong>⛔ NE PAS déplacer un blessé</strong> sauf danger immédiat (feu, noyade). Risque colonne vertébrale !</div>
+<div class="sec-title">📞 Numéros d'urgence</div>
+<table class="t">
+  <tr><td>🚑 SAMU</td><td style="font-weight:700;color:var(--rouge);font-size:1.1rem;">15</td></tr>
+  <tr><td>👮 Police</td><td style="font-weight:700;color:var(--rouge);font-size:1.1rem;">17</td></tr>
+  <tr><td>🚒 Pompiers</td><td style="font-weight:700;color:var(--rouge);font-size:1.1rem;">18</td></tr>
+  <tr><td>🆘 Européen</td><td style="font-weight:700;color:var(--rouge);font-size:1.1rem;">112</td></tr>
+</table>
+<div class="sec-title">🤲 Position Latérale de Sécurité (PLS)</div>
+<div class="rule-box">
+  <div class="rule-title">Quand ?</div>
+  Personne <strong>inconsciente mais qui respire</strong>. Tourne-la sur le côté pour éviter l'étouffement.
+</div>
+<div class="danger-box"><strong>⚠️ Pas de PLS</strong> si blessure colonne suspectée → attends les secours.</div>
+<div class="sec-title">💓 Arrêt cardiaque</div>
+<div class="rule-box">
+  <div class="rule-title">Inconscient ET ne respire PAS</div>
+  1. Appeler le 15 immédiatement<br>
+  2. 30 compressions rapides au centre de la poitrine<br>
+  3. Utiliser le défibrillateur (DAE) s'il y en a un
+</div>`
+  }
+};
+
+function openLecon(id) {
+  const l = lecons[id];
+  document.getElementById('lecon-body').innerHTML = `<h2>${l.titre}</h2>${l.html}`;
+  document.getElementById('cours-liste').style.display = 'none';
+  document.getElementById('lecon-view').classList.add('visible');
+  document.getElementById('scroll-cours').scrollTop = 0;
+  const prog = loadProg();
+  if(!prog.coursVus) prog.coursVus = [];
+  if(!prog.coursVus.includes(id)) prog.coursVus.push(id);
+  saveProg(prog);
+  refreshCoursVus();
+}
+function closeLecon() {
+  document.getElementById('cours-liste').style.display = 'block';
+  document.getElementById('lecon-view').classList.remove('visible');
+  document.getElementById('lecon-body').innerHTML = '';
+  document.getElementById('scroll-cours').scrollTop = 0;
+}
+function refreshCoursVus() {
+  const vus = loadProg().coursVus || [];
+  const ids = ['signalisation','vitesses','priorites','alcool','securite','secours'];
+  document.querySelectorAll('.lecon-item').forEach((el, i) => {
+    const arrow = el.querySelector('.lecon-arrow');
+    if(arrow && vus.includes(ids[i])) { arrow.textContent = '✓'; arrow.style.color = '#10b981'; arrow.style.fontWeight = '700'; }
+  });
+  const el = document.getElementById('cours-count');
+  if(el) el.textContent = vus.length + '/6 cours vus';
+}
+
+// ── QUIZ ──
+const QS = [
+  {theme:'🚦 Signalisation', q:"Un panneau triangulaire à bordure rouge signifie :", a:["Obligation","Interdiction","Danger","Indication"], c:2, e:"Les panneaux triangulaires à bordure rouge signalent un danger à venir."},
+  {theme:'🚦 Signalisation', q:"Un feu orange fixe apparaît et tu peux t'arrêter sans danger. Tu :", a:["Accélères pour passer","T'arrêtes","Klaxonnes","Allumes les feux de détresse"], c:1, e:"Feu orange fixe = arrêter si possible. Le feu passe au rouge."},
+  {theme:'🚦 Signalisation', q:"Une ligne blanche continue au sol signifie :", a:["Dépassement autorisé","Dépassement interdit","Voie réservée bus","Changement de file autorisé"], c:1, e:"La ligne continue est infranchissable. Dépassement strictement interdit."},
+  {theme:'🚦 Signalisation', q:"Un cercle rouge avec le chiffre 60 indique :", a:["Vitesse conseillée 60","Vitesse max 60 km/h","Vitesse min 60","Zone scolaire"], c:1, e:"Cercle rouge + chiffre = limitation de vitesse. Maximum 60 km/h."},
+  {theme:'⚡ Vitesses', q:"Vitesse max sur autoroute sous la pluie ?", a:["130 km/h","120 km/h","110 km/h","100 km/h"], c:2, e:"Sous la pluie sur autoroute : 110 km/h (contre 130 par temps sec)."},
+  {theme:'⚡ Vitesses', q:"Vitesse max sur route nationale bidirectionnelle hors agglo ?", a:["90 km/h","80 km/h","70 km/h","110 km/h"], c:1, e:"Depuis 2018, les routes à double sens = 80 km/h."},
+  {theme:'⚡ Vitesses', q:"Visibilité réduite à moins de 50 m (brouillard). Vitesse max ?", a:["80 km/h","70 km/h","60 km/h","50 km/h"], c:3, e:"Visibilité < 50 m = 50 km/h partout, quelle que soit la route."},
+  {theme:'⚡ Vitesses', q:"Sur sol mouillé, la distance de freinage est :", a:["Identique","Légèrement plus longue","Environ 2 fois plus longue","4 fois plus longue"], c:2, e:"Sol mouillé = distance de freinage doublée. Augmente tes distances de sécurité."},
+  {theme:'🔄 Priorités', q:"Dans un rond-point moderne, qui est prioritaire ?", a:["Les véhicules qui entrent","Ceux déjà engagés","Celui de droite","Le plus rapide"], c:1, e:"Dans un giratoire, les véhicules déjà engagés sont prioritaires."},
+  {theme:'🔄 Priorités', q:"Que signifie un panneau STOP ?", a:["Ralentir et regarder","Céder sans s'arrêter forcément","Arrêt complet obligatoire","Priorité à droite seulement"], c:2, e:"STOP = arrêt complet (vitesse 0) obligatoire, même si la voie semble libre."},
+  {theme:'🔄 Priorités', q:"Sans panneau, un véhicule arrive par ta droite. Qui passe ?", a:["Toi","Le véhicule de droite","Celui arrivé en premier","Le plus rapide"], c:1, e:"Priorité à droite : tout véhicule arrivant par ta droite est prioritaire."},
+  {theme:'🔄 Priorités', q:"Des pompiers avec sirène arrivent derrière toi. Tu :", a:["Accélères","Te serres à droite et ralentis","Continues normalement","T'arrêtes au milieu"], c:1, e:"Véhicules d'urgence = priorité absolue. Se serrer à droite et ralentir."},
+  {theme:'🍺 Alcool & drogues', q:"Taux d'alcoolémie maximum pour un conducteur normal ?", a:["0,2 g/L","0,5 g/L","0,8 g/L","1,0 g/L"], c:1, e:"Taux légal : 0,5 g/L de sang. À 0,8 g/L = délit."},
+  {theme:'🍺 Alcool & drogues', q:"Comment accélérer l'élimination de l'alcool ?", a:["Café","Douche froide","Sport","Impossible, seul le temps élimine"], c:3, e:"Rien n'accélère l'élimination. Seul le temps le permet (≈ 0,10-0,15 g/L/h)."},
+  {theme:'🍺 Alcool & drogues', q:"Taux max pour un conducteur en permis probatoire ?", a:["0,5 g/L","0,3 g/L","0,2 g/L","0,0 g/L"], c:2, e:"Permis probatoire : limite réduite à 0,2 g/L — pratiquement zéro."},
+  {theme:'🍺 Alcool & drogues', q:"Sur un médicament, pictogramme rouge signifie :", a:["Conduire prudemment","Conduire déconseillé","Ne pas conduire","Sans risque"], c:2, e:"Pictogramme rouge = interdiction de conduire sous ce traitement."},
+  {theme:'🛡️ Sécurité', q:"La ceinture de sécurité est obligatoire :", a:["Uniquement à l'avant","Sur autoroute seulement","Pour tous, avant ET arrière","Hors agglo seulement"], c:2, e:"Ceinture obligatoire pour TOUS les occupants, avant et arrière, partout."},
+  {theme:'🛡️ Sécurité', q:"Un enfant de 3 ans dans ta voiture. Comment l'installer ?", a:["Siège avant avec ceinture","Siège auto homologué adapté","Ceinture adulte à l'arrière","Dans les bras d'un adulte"], c:1, e:"Enfant < 10 ans = siège auto homologué adapté à son gabarit, obligatoire."},
+  {theme:'🛡️ Sécurité', q:"Panne sur l'autoroute. Première chose à faire ?", a:["Appeler l'assurance","Mettre le gilet AVANT de sortir","Placer le triangle d'abord","Inspecter le moteur"], c:1, e:"Mettre le gilet rétroréfléchissant AVANT de sortir du véhicule. Ensuite le triangle à 150 m."},
+  {theme:'🆘 Premiers secours', q:"Sur les lieux d'un accident, le bon ordre est :", a:["Alerter, Protéger, Secourir","Secourir, Alerter, Protéger","Protéger, Alerter, Secourir","Secourir, Protéger, Alerter"], c:2, e:"Règle PAS : Protéger → Alerter → Secourir. Dans cet ordre."},
+  {theme:'🆘 Premiers secours', q:"Quel numéro pour le SAMU ?", a:["15","17","18","112"], c:0, e:"15 = SAMU (urgences médicales). 18 = pompiers. 17 = police. 112 = européen."},
+  {theme:'🆘 Premiers secours', q:"Inconsciente mais respire. Que faire ?", a:["Lui donner de l'eau","Mettre en PLS","La secouer pour réveiller","La faire asseoir"], c:1, e:"Inconscient + respire = PLS (Position Latérale de Sécurité) pour éviter l'étouffement."},
+  {theme:'🆘 Premiers secours', q:"Doit-on déplacer un blessé après un accident ?", a:["Oui, toujours sortir du véhicule","Oui, sur le trottoir","Non, sauf danger immédiat","Oui, le mettre en PLS"], c:2, e:"On ne déplace JAMAIS un blessé sauf danger immédiat. Risque de blesser la colonne."},
+];
+
+let selThemeVal = 'all';
+let quizQ = [], curQ = 0, score = 0, answered = false;
+
+function selTheme(el, t) {
+  document.querySelectorAll('.qt-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selThemeVal = t;
+}
+
+function goQuiz(theme) {
+  showNav('quiz');
+  // auto-select theme
+  document.querySelectorAll('.qt-btn').forEach(b => b.classList.remove('selected'));
+  const map = {signalisation:1,vitesses:2,priorites:3,alcool:4,securite:5};
+  const idx = map[theme];
+  if(idx !== undefined) {
+    document.querySelectorAll('.qt-btn')[idx].classList.add('selected');
+    selThemeVal = theme;
+  }
+}
+
+function startQuiz() {
+  let pool = selThemeVal === 'all' ? QS : QS.filter(q => q.theme.toLowerCase().includes(selThemeVal));
+  quizQ = pool.sort(() => Math.random()-0.5).slice(0, Math.min(10, pool.length));
+  curQ = 0; score = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-result').classList.remove('visible');
+  document.getElementById('quiz-game').style.display = 'block';
+  renderQ();
+}
+
+function renderQ() {
+  answered = false;
+  const q = quizQ[curQ], total = quizQ.length;
+  document.getElementById('quiz-counter').textContent = `${curQ+1} / ${total}`;
+  document.getElementById('quiz-live').textContent = `✓ ${score}`;
+  document.getElementById('q-progress').style.width = `${((curQ+1)/total)*100}%`;
+  document.getElementById('q-theme').textContent = q.theme;
+  document.getElementById('q-text').textContent = q.q;
+  const c = document.getElementById('q-answers');
+  c.innerHTML = '';
+  q.a.forEach((a,i) => {
+    const b = document.createElement('button');
+    b.className = 'ans-btn';
+    b.textContent = a;
+    b.onclick = () => answerQ(i);
+    c.appendChild(b);
+  });
+  const fb = document.getElementById('q-feedback');
+  fb.className = 'feedback-box';
+  fb.textContent = '';
+  const nb = document.getElementById('q-next');
+  nb.className = 'next-q-btn';
+  nb.textContent = curQ < quizQ.length-1 ? 'Question suivante →' : 'Voir mes résultats 🎯';
+  document.getElementById('scroll-quiz').scrollTop = 0;
+}
+
+function answerQ(i) {
+  if(answered) return;
+  answered = true;
+  const q = quizQ[curQ];
+  document.querySelectorAll('.ans-btn').forEach((b,idx) => {
+    b.disabled = true;
+    if(idx === q.c) b.classList.add('correct');
+    if(idx === i && i !== q.c) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('q-feedback');
+  if(i === q.c) { score++; fb.className='feedback-box ok'; fb.innerHTML=`✅ <strong>Bonne réponse !</strong> ${q.e}`; }
+  else { fb.className='feedback-box ko'; fb.innerHTML=`❌ <strong>Mauvaise réponse.</strong> ${q.e}`; }
+  document.getElementById('quiz-live').textContent = `✓ ${score}`;
+  document.getElementById('q-next').classList.add('visible');
+}
+
+function nextQ() {
+  curQ++;
+  if(curQ >= quizQ.length) showResult();
+  else renderQ();
+}
+
+function showResult() {
+  document.getElementById('quiz-game').style.display = 'none';
+  const total = quizQ.length, pct = Math.round((score/total)*100);
+  const emojis = pct>=90?'🏆':pct>=70?'👍':pct>=50?'📚':'💪';
+  const msgs = pct>=90?'Excellent ! Tu es prêt(e) !':pct>=70?'Bien joué, continue !':pct>=50?'Pas mal, révise encore.':'Continue, tu progresses !';
+  document.getElementById('res-emoji').textContent = emojis;
+  const rs = document.getElementById('res-score');
+  rs.textContent = `${score}/${total}`;
+  rs.className = 'result-score '+(pct>=70?'good':'bad');
+  document.getElementById('res-msg').innerHTML = `${msgs}<br><span style="font-size:0.82rem;color:var(--txt2);">${pct}% — Examen réel : 87,5% requis</span>`;
+  document.getElementById('quiz-result').classList.add('visible');
+  document.getElementById('scroll-quiz').scrollTop = 0;
+  // Sauvegarder le score
+  const prog = loadProg();
+  if(!prog.scores) prog.scores = [];
+  prog.scores.push({pct, score, total, date: new Date().toLocaleDateString('fr-FR'), theme: selThemeVal});
+  if(prog.scores.length > 20) prog.scores = prog.scores.slice(-20);
+  prog.meilleurScore = Math.max(prog.meilleurScore||0, pct);
+  prog.nbQuiz = (prog.nbQuiz||0) + 1;
+  saveProg(prog);
+  refreshAccueil();
+}
+
+function resetQuiz() {
+  document.getElementById('quiz-result').classList.remove('visible');
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('scroll-quiz').scrollTop = 0;
+}
+
+function refreshAccueil() {
+  const prog = loadProg();
+  const el = document.getElementById('stats-progression');
+  if(!el) return;
+  const coursVus = (prog.coursVus||[]).length;
+  const nbQuiz = prog.nbQuiz||0;
+  const meilleur = prog.meilleurScore||0;
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;">
+      <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 8px;text-align:center;">
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.4rem;">${coursVus}/6</div>
+        <div style="font-size:0.72rem;color:#bfdbfe;">Cours vus</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 8px;text-align:center;">
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.4rem;">${nbQuiz}</div>
+        <div style="font-size:0.72rem;color:#bfdbfe;">Quiz faits</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 8px;text-align:center;">
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.4rem;">${meilleur}%</div>
+        <div style="font-size:0.72rem;color:#bfdbfe;">Meilleur score</div>
+      </div>
+    </div>`;
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', () => {
+  refreshCoursVus();
+  refreshAccueil();
+});
+
+// ── PLANNING ──
+function buildPlanning() {
+  const el = document.getElementById('planning-content');
+  if(el.innerHTML.trim()) return;
+  const start = new Date('2026-06-05');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const days = ['L','M','M','J','V'];
+  const weeks = [
+    {label:'Semaine 1 — Bases', sub:'Signalisation + Vitesses'},
+    {label:'Semaine 2 — Règles', sub:'Priorités + Alcool'},
+    {label:'Semaine 3 — Sécurité & Secours', sub:'Sécurité + Premiers secours'},
+    {label:'Semaine 4 — Révisions', sub:'Révisions + examens blancs'},
+    {label:'Semaine 5 — Examens blancs', sub:'Entraînements quotidiens'},
+  ];
+  const tasks = [
+    'Cours\nSignali.','Quiz\nSignali.','Cours\nVitesses','Quiz\nVitesses','Révision\nS1',
+    'Cours\nPriorités','Quiz\nPriorités','Cours\nAlcool','Quiz\nAlcool','Révision\nS2',
+    'Cours\nSécurité','Quiz\nSécurité','Cours\nSecours','Quiz\nSecours','Révision\nS3',
+    'Examen\nblanc','Révision\nerreurs','Examen\nblanc','Mémo\nExpress','Révision\ngénérale',
+    'Examen\nblanc','Examen\nblanc','Révision\nciblée','Mémo\nExpress','Révision\nfinale',
+  ];
+  let html='', dc=0;
+  for(let w=0;w<5;w++){
+    html+=`<div class="week-block"><div class="week-label">${weeks[w].label}</div><div class="week-sub">${weeks[w].sub}</div><div class="days-row">`;
+    for(let d=0;d<5;d++){
+      const date=new Date(start); date.setDate(start.getDate()+w*7+d);
+      const dn=days[d]; const dn2=date.getDate();
+      const cls = date.getTime()===today.getTime()?'today':date<today?'done':'future';
+      html+=`<div class="day-cell ${cls}"><div class="day-num">${dn2}</div><div class="day-name">${dn}</div><div class="day-task">${(tasks[dc]||'').replace('\n','<br>')}</div></div>`;
+      dc++;
+    }
+    html+=`</div></div>`;
+  }
+  html+=`<div class="exam-bar"><h3>🎓 10 Juillet 2026</h3><p>JOUR J — Examen du Code de la Route 💪</p></div>`;
+  el.innerHTML=html;
+}
+</script>
+</body>
+</html>
